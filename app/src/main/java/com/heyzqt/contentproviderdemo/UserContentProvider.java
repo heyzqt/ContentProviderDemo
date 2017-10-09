@@ -1,6 +1,7 @@
 package com.heyzqt.contentproviderdemo;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -9,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by heyzqt on 2017/10/8.
@@ -40,6 +42,8 @@ public class UserContentProvider extends ContentProvider {
     private UserDataBaseHelper mDatabaseHelper;
 
     private SQLiteDatabase mUsersDB;
+
+    private static final String TAG = "UserContentProvider";
 
     static {
         mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -78,6 +82,23 @@ public class UserContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
+        switch (mUriMatcher.match(uri)) {
+            case USERS:
+                long rowID = mUsersDB.insert(UserDataBaseHelper.TABLE_NAME, null, contentValues);
+                if (rowID > 0) {
+                    return ContentUris.withAppendedId(URI, rowID);
+                }
+                break;
+            case USERS_ID:
+                break;
+            case USER_NAME:
+                break;
+            case USER_AGE:
+                break;
+            default:
+                Log.i(TAG, "insert: can not recognise the uri");
+                throw new IllegalArgumentException("Unknown URI : " + URI);
+        }
         return null;
     }
 

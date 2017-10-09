@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class UserDataBaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "heyzqt";
+    private static final String DATABASE_NAME = "heyzqt.db";
 
-    private static final String TABLE_NAME = "users";
+    public static final String TABLE_NAME = "users";
 
     private static final String SQL_CREATE_MAIN = "CREATE TABLE " +
             TABLE_NAME +                       // Table's name
