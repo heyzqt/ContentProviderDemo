@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.heyzqt.contentproviderdemo">
 
+    <permission
+        android:name="com.heyzqt.contentproviderdemo.read"
+        android:label="provider read permission"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.heyzqt.contentproviderdemo.write"
+        android:label="provider write permission"
+        android:protectionLevel="normal" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +27,9 @@
         <provider
             android:name="com.heyzqt.contentproviderdemo.UserContentProvider"
             android:authorities="com.heyzqt.contentproviderdemo.provider"
-            android:exported="true">
+            android:exported="true"
+            android:readPermission="com.heyzqt.contentproviderdemo.read"
+            android:writePermission="com.heyzqt.contentproviderdemo.write">
             <intent-filter>
                 <action android:name="com.heyzqt.contentproviderdemo.UserContentProvider" />
                 <category android:name="android.intent.category.DEFAULT" />
