@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,13 +65,19 @@ public class UserContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         switch (mUriMatcher.match(uri)) {
+            case USERS:
+                queryBuilder.setTables(UserDataBaseHelper.TABLE_NAME);
+                break;
             case USER_NAME:
                 break;
             case USER_AGE:
                 break;
         }
-        return null;
+        SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
+        Cursor cursor = queryBuilder.query(mUsersDB, strings, s, strings1, s1, null, null, null);
+        return cursor;
     }
 
     @Nullable
@@ -104,11 +111,31 @@ public class UserContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        int count = 0;
+        switch (mUriMatcher.match(uri)) {
+            case USERS:
+                count = mUsersDB.delete(UserDataBaseHelper.TABLE_NAME, s, strings);
+                Log.i(TAG, "delete: count = " + count);
+                break;
+            default:
+                Log.i(TAG, "insert: can not recognise the uri");
+                throw new IllegalArgumentException("Unknown URI : " + URI);
+        }
+        return count;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        int count = 0;
+        switch (mUriMatcher.match(uri)) {
+            case USERS:
+                count = mUsersDB.update(UserDataBaseHelper.TABLE_NAME, contentValues, s, strings);
+                Log.i(TAG, "update: count = " + count);
+                break;
+            default:
+                Log.i(TAG, "insert: can not recognise the uri");
+                throw new IllegalArgumentException("Unknown URI : " + URI);
+        }
+        return count;
     }
 }
