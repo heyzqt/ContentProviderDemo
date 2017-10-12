@@ -7,3 +7,10 @@
 /build
 /captures
 .externalNativeBuild
+
+/test.txt
+/.idea
+/gradle.properties
+/gradle
+/gradlew
+/gradlew.bat
